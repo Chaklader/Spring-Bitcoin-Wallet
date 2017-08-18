@@ -15,6 +15,8 @@ import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.hibernate.HibernateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,8 @@ import static mobi.puut.controllers.WalletManager.networkParameters;
 @Service
 @Transactional
 public class WalletServiceImpl implements WalletService {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserDao userDao;
@@ -90,22 +94,25 @@ public class WalletServiceImpl implements WalletService {
 
             if (genWalletMap.get(walletName) == null) {
 
-                System.out.println("wallet name = " + walletName);
+                logger.info("Wallet name that we are workign on {}", walletName);
 
                 final WalletManager walletManager = WalletManager.setupWallet(walletName);
+
                 walletManager.addWalletSetupCompletedListener((wallet) -> {
+
                     Address address = wallet.currentReceiveAddress();
                     WalletInfo newWallet = createWalletInfo(walletName, address.toString());
 
                     walletMangersMap.put(newWallet.getId(), walletManager);
                     genWalletMap.remove(walletName);
                 });
-                genWalletMap.put(walletName, walletManager);
-            }
 
+                genWalletMap.put(walletName, walletManager);
+
+
+            }
             return walletInfo;
         }
-
         return null;
     }
 
@@ -142,7 +149,7 @@ public class WalletServiceImpl implements WalletService {
 
             Wallet wallet = walletManager.getBitcoin().wallet();
 
-            if(Objects.isNull(wallet)){
+            if (Objects.isNull(wallet)) {
                 return model;
             }
 

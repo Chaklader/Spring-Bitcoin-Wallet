@@ -84,7 +84,7 @@ public class WalletServiceImpl implements WalletService {
      * @param walletName
      */
     @Override
-    public synchronized WalletInfo generateAddress(final String walletName, final String currencyName) {
+    public synchronized WalletInfo generateAddress(final String walletName) {
 
         WalletInfo walletInfo = walletInfoDao.getByName(walletName);
 
@@ -94,58 +94,25 @@ public class WalletServiceImpl implements WalletService {
 
             if (genWalletMap.get(walletName) == null) {
 
-                String currency = currencyName.toUpperCase();
+                logger.info("Wallet name that we are workign on {}", walletName);
 
-                switch (currency) {
+                final WalletManager walletManager = WalletManager.setupWallet(walletName);
 
-                    case "BITCOIN": {
+                walletManager.addWalletSetupCompletedListener((wallet) -> {
 
-                        logger.info("Currency that we are workign on {}", currency);
+                    Address address = wallet.currentReceiveAddress();
+                    WalletInfo newWallet = createWalletInfo(walletName, address.toString());
 
-                        final WalletManager walletManager = WalletManager.setupWallet(walletName);
+                    walletMangersMap.put(newWallet.getId(), walletManager);
+                    genWalletMap.remove(walletName);
+                });
 
-                        walletManager.addWalletSetupCompletedListener((wallet) -> {
+                genWalletMap.put(walletName, walletManager);
 
-                            Address address = wallet.currentReceiveAddress();
-                            WalletInfo newWallet = createWalletInfo(walletName, address.toString(), currency);
 
-                            walletMangersMap.put(newWallet.getId(), walletManager);
-                            genWalletMap.remove(walletName);
-                        });
-
-                        genWalletMap.put(walletName, walletManager);
-                        break;
-                    }
-
-                    case "ETHEREUM":
-
-                        logger.info("Currency that we are workign on {}", currency);
-                        break;
-
-                    case "LITECOIN":
-                        logger.info("Currency that we are workign on {}", currency);
-                        break;
-
-                    case "NEM":
-                        logger.info("Currency that we are workign on {}", currency);
-                        break;
-
-                    case "RIPPLE":
-                        logger.info("Currency that we are workign on {}", currency);
-                        break;
-
-                    case "DASH":
-                        logger.info("Currency that we are workign on {}", currency);
-                        break;
-
-                    default:
-                        break;
-                }
             }
-
             return walletInfo;
         }
-
         return null;
     }
 
@@ -308,8 +275,8 @@ public class WalletServiceImpl implements WalletService {
      * @param address
      * @return
      */
-    protected WalletInfo createWalletInfo(final String walletName, final String address, final String currencyName) {
-        return walletInfoDao.create(walletName, address, currencyName);
+    protected WalletInfo createWalletInfo(final String walletName, final String address) {
+        return walletInfoDao.create(walletName, address);
     }
 
     /**

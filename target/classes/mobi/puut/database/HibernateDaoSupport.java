@@ -15,3 +15,5 @@ public abstract class HibernateDaoSupport {
         return sessionFactory;
     }
 }
+
+

@@ -3,9 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BitcoinWalletApp.iml" filepath="$PROJECT_DIR$/BitcoinWalletApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/BitcoinWalletApp (1).iml" filepath="$PROJECT_DIR$/BitcoinWalletApp (1).iml" />
-      <module fileurl="file://$PROJECT_DIR$/BitcoinWalletApp (1).iml" filepath="$PROJECT_DIR$/BitcoinWalletApp (1).iml" />
-      <module fileurl="file://$PROJECT_DIR$/BitcoinWalletApp (2).iml" filepath="$PROJECT_DIR$/BitcoinWalletApp (2).iml" />
     </modules>
   </component>
 </project>

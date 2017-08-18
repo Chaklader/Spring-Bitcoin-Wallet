@@ -67,7 +67,7 @@ public class DatabaseConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         // dataSource.setUrl("jdbc:mysql://localhost:3306/wallet?createDatabaseIfNotExist=true");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/wallet");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/Wall");
         dataSource.setUsername("testuser");
         dataSource.setPassword("testpassword");
 
@@ -79,6 +79,7 @@ public class DatabaseConfig {
         Properties properties = new Properties();
 //        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.id.new_generator_mappings", "false");
         return properties;
     }
 }

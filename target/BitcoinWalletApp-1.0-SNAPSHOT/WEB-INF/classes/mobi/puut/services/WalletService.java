@@ -13,6 +13,7 @@ public interface WalletService {
 
     List<WalletInfo> getAllWallets();
 
+//    WalletInfo generateAddress(String walletName, String currencyName);
     WalletInfo generateAddress(String walletName);
 
     WalletModel getWalletModel(Long id);

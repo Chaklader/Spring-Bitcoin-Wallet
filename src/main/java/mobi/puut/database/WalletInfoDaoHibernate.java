@@ -21,6 +21,7 @@ public class WalletInfoDaoHibernate
 
     @Override
     public List<WalletInfo> getAllWallets() {
+
         try (Session session = getSessionFactory().openSession()) {
             List<WalletInfo> result = session.createQuery("from WalletInfo").list();
             return result;
@@ -40,6 +41,7 @@ public class WalletInfoDaoHibernate
 
     @Override
     public WalletInfo getById(final Long id) {
+
         try (Session session = getSessionFactory().openSession()) {
             WalletInfo walletInfo = session.get(WalletInfo.class, id);
             return walletInfo;
@@ -52,7 +54,7 @@ public class WalletInfoDaoHibernate
      * @return return the created WalletInfo object with provided name and address
      */
     @Override
-    public WalletInfo create(String name, String address, String currencyName) {
+    public WalletInfo create(String name, String address) {
 
         WalletInfo walletInfo = new WalletInfo();
         walletInfo.setAddress(address);
@@ -73,6 +75,7 @@ public class WalletInfoDaoHibernate
             throw e;
         }
     }
+
 
 //    @Override
 //    public void deleteWalletInfoById(Long id) {
