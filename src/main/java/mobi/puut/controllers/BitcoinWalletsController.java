@@ -1,7 +1,6 @@
 package mobi.puut.controllers;
 
 import mobi.puut.entities.WalletInfo;
-import mobi.puut.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

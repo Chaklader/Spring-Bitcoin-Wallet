@@ -1,21 +1,14 @@
 package mobi.puut.controllers;
 
-import mobi.puut.entities.User;
 import mobi.puut.entities.WalletInfo;
 import mobi.puut.services.UserService;
-import mobi.puut.services.WalletService;
 import org.bitcoinj.core.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Chaklader on 6/24/17.
