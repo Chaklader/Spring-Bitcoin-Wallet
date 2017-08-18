@@ -58,6 +58,7 @@ public class WalletInfoDao
         Transaction transaction = null;
 
         try (Session session = getSessionFactory().openSession()) {
+
             transaction = session.beginTransaction();
             session.persist(walletInfo);
             transaction.commit();

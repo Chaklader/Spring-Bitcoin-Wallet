@@ -15,7 +15,7 @@ import mobi.puut.entities.User;
  * Created by Chaklader on 6/19/17.
  */
 @Service("userService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserService {
 
     @Autowired
