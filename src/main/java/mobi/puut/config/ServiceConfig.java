@@ -11,4 +11,5 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @ComponentScan(basePackages = {"mobi.puut.services"})
 public class ServiceConfig {
+
 }

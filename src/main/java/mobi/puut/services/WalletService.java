@@ -11,7 +11,6 @@ import mobi.puut.entities.Status;
 import mobi.puut.entities.User;
 import mobi.puut.entities.WalletInfo;
 import org.bitcoinj.core.*;
-import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.hibernate.HibernateException;
@@ -36,7 +35,7 @@ import static mobi.puut.controllers.WalletManager.networkParameters;
  */
 @Service
 @Transactional
-public class WalletService implements WalletService {
+public class WalletService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -53,12 +52,10 @@ public class WalletService implements WalletService {
 
     private Map<Long, WalletManager> walletMangersMap = new ConcurrentHashMap<>();
 
-    @Override
     public List<Status> getWalletStatuses(final Long id) {
         return statusDao.getByWalletId(id);
     }
 
-    @Override
     public WalletInfo getWalletInfo(Long walletId) {
         return walletInfoDao.getById(walletId);
     }
@@ -66,7 +63,6 @@ public class WalletService implements WalletService {
     /**
      * @return return all the walletInfo as list
      */
-    @Override
     public List<WalletInfo> getAllWallets() {
 
         try {
@@ -83,7 +79,6 @@ public class WalletService implements WalletService {
      *
      * @param walletName
      */
-    @Override
     public synchronized WalletInfo generateAddress(final String walletName) {
 
         WalletInfo walletInfo = walletInfoDao.getByName(walletName);
@@ -123,7 +118,6 @@ public class WalletService implements WalletService {
      * @param id
      * @return
      */
-    @Override
     public WalletModel getWalletModel(final Long id) {
         WalletManager walletManager = getWalletManager(id);
         WalletModel model = walletManager == null ? null : walletManager.getModel();
@@ -138,7 +132,6 @@ public class WalletService implements WalletService {
      * @param address  takes address to send the money
      * @return return wallet model with subtracted transaction amount
      */
-    @Override
     public WalletModel sendMoney(final Long walletId, final String amount, final String address) {
 
         User user = getCurrentUser();
@@ -300,7 +293,6 @@ public class WalletService implements WalletService {
         return statusDao.saveStatus(status);
     }
 
-    @Override
     public void deleteWalletInfoById(Long id) {
         walletInfoDao.deleteWalletInfoById(id);
     }

@@ -33,7 +33,6 @@ public class DatabaseConfig {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
 
-        //  mobi.puut.entities
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan(
@@ -51,7 +50,6 @@ public class DatabaseConfig {
         HibernateTransactionManager txManager
                 = new HibernateTransactionManager();
         txManager.setSessionFactory(sessionFactory);
-
         return txManager;
     }
 
@@ -67,7 +65,7 @@ public class DatabaseConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         // dataSource.setUrl("jdbc:mysql://localhost:3306/wallet?createDatabaseIfNotExist=true");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/Wall");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/BitcoinWallet");
         dataSource.setUsername("testuser");
         dataSource.setPassword("testpassword");
 

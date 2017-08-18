@@ -85,53 +85,7 @@ class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/resources/");
-
-//        registry.addResourceHandler("swagger-ui.html")
-//                .addResourceLocations("classpath:/META-INF/resources/");
-//
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
-
-
-//    @Bean
-//    public Docket api() {
-//        return new Docket(DocumentationType.SWAGGER_2)
-//                .select()
-//                .apis(RequestHandlerSelectors.any())
-//                .paths(PathSelectors.any())
-//                .build();
-//    }
-
-//    @Bean(name = "multipartResolver")
-//    public CommonsMultipartResolver getMultipartResolver() {
-//        return new CommonsMultipartResolver();
-//    }
-
-//    @Bean
-//    public MultipartResolver multipartResolver() {
-//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//        multipartResolver.setMaxUploadSize(5242880);
-//        return multipartResolver;
-//    }
-
-//    @Bean(name = "messageSource")
-//    public ReloadableResourceBundleMessageSource getMessageSource() {
-//        ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
-//        resource.setBasename("classpath:messages");
-//        resource.setDefaultEncoding("UTF-8");
-//        return resource;
-//    }
-
-//    @Bean
-//    public InternalResourceViewResolver htmlViewResolver() {
-//        InternalResourceViewResolver bean = new InternalResourceViewResolver();
-//        bean.setPrefix("/WEB-INF/html/");
-//        bean.setSuffix(".html");
-//        bean.setOrder(2);
-//        return bean;
-//    }
-
 }
 
 

@@ -2,6 +2,7 @@ package mobi.puut.controllers;
 
 import mobi.puut.entities.WalletInfo;
 import mobi.puut.services.UserService;
+import mobi.puut.services.WalletService;
 import org.bitcoinj.core.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
