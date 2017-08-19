@@ -40,4 +40,15 @@ Contacts
 --------
 
 
+For the first time, To simply build the entire project - just run the standard Maven build:
+-------------------------------------------------------------------------------------------
+
+mvn clean install
+
+
+Later to skips the tests, run with the command:
+-----------------------------------------------
+
+mvn clean install -Dmaven.test.skip=true
+
 

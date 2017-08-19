@@ -7,41 +7,40 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Chaklader on 6/24/17.
  */
 @Repository
-public class WalletInfoDao
-        extends HibernateDaoSupport {
+public class WalletInfoDao {
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Transactional(rollbackFor = Exception.class)
     public List<WalletInfo> getAllWallets() {
 
-        try (Session session = getSessionFactory().openSession()) {
-            List<WalletInfo> result = session.createQuery("from WalletInfo").list();
-            return result;
-        }
+        return sessionFactory.getCurrentSession()
+                .createQuery("from WalletInfo").getResultList();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public WalletInfo getByName(String walletName) {
 
-        try (Session session = getSessionFactory().openSession()) {
-            Query query = session.createQuery("from WalletInfo where name = :name");
-            query.setParameter("name", walletName);
-            List<WalletInfo> userList = query.list();
-            return userList.isEmpty() ? null : userList.get(0);
-        }
+        List<WalletInfo> walletInfos = sessionFactory.getCurrentSession().createQuery("from WalletInfo where name = :name")
+                .setParameter("name", walletName).getResultList();
+        return Objects.isNull(walletInfos) ? null : walletInfos.get(0);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public WalletInfo getById(final Long id) {
-
-        try (Session session = getSessionFactory().openSession()) {
-            WalletInfo walletInfo = session.get(WalletInfo.class, id);
-            return walletInfo;
-        }
+        return sessionFactory.getCurrentSession().get(WalletInfo.class, id);
     }
 
     /**
@@ -51,38 +50,19 @@ public class WalletInfoDao
      */
     public WalletInfo create(String name, String address) {
 
+        // create the WalletInfo entity with provided name and address
         WalletInfo walletInfo = new WalletInfo();
         walletInfo.setAddress(address);
         walletInfo.setName(name);
 
-        Transaction transaction = null;
-
-        try (Session session = getSessionFactory().openSession()) {
-
-            transaction = session.beginTransaction();
-            session.persist(walletInfo);
-            transaction.commit();
-            return walletInfo;
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
-        }
+        // persist the created instance into the database
+        sessionFactory.getCurrentSession().persist(walletInfo);
+        return walletInfo;
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     public void deleteWalletInfoById(Long theId) {
-
-        // get the current hibernate session
-        Session currentSession = getSessionFactory().getCurrentSession();
-
-        // delete object with primary key
-        Query theQuery =
-                currentSession.createQuery("delete WalletInfo where id=:walletId");
-        theQuery.setParameter("walletId", theId);
-
-        theQuery.executeUpdate();
+        sessionFactory.getCurrentSession().createQuery("delete WalletInfo where id = :id")
+                .setParameter("id", theId).executeUpdate();
     }
 }
