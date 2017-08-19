@@ -34,7 +34,6 @@ import static mobi.puut.controllers.WalletManager.networkParameters;
  * Created by Chaklader on 6/24/17.
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class WalletService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
