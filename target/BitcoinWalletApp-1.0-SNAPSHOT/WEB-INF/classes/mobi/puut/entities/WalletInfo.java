@@ -23,6 +23,15 @@ public class WalletInfo {
     @Column(name = "address")
     private String address;
 
+
+    public WalletInfo(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public WalletInfo() {
+    }
+
     public Long getId() {
         return id;
     }
