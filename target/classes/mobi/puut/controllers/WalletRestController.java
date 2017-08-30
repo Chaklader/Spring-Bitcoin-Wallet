@@ -20,9 +20,6 @@ public class WalletRestController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    //    To revert to a previous commit, ignoring any changes:
-    //    git reset --hard HEAD
-
     @Autowired
     private WalletService walletService;
 

@@ -4,9 +4,7 @@ import mobi.puut.entities.WalletInfo;
 import mobi.puut.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
@@ -16,7 +14,6 @@ import java.util.List;
  */
 @Controller
 public class BitcoinWalletsController {
-
 
     @Autowired
     private WalletService walletService;
@@ -32,7 +29,7 @@ public class BitcoinWalletsController {
      * @param walletName accept walletName and generate the requested wallet
      * @return redirects to the landing page
      */
-    @RequestMapping(value = "/generateAddress", method = RequestMethod.POST)
+    @PostMapping(value = "/generateAddress")
     public String generateAddress(final @RequestParam String walletName) {
         walletService.generateAddress(walletName);
         return "redirect:/";
@@ -54,7 +51,7 @@ public class BitcoinWalletsController {
         return "transactions";
     }
 
-    @RequestMapping(value = "/sendMoney", method = RequestMethod.GET)
+    @GetMapping(value = "/sendMoney")
     public String showSendMoney(final Model model, @RequestParam final Long id) {
         WalletModel walletModel = walletService.getWalletModel(id);
         model.addAttribute("walletModel", walletModel);
@@ -62,7 +59,7 @@ public class BitcoinWalletsController {
         return "sendMoney";
     }
 
-    @RequestMapping(value = "/sendMoney", method = RequestMethod.POST)
+    @PostMapping(value = "/sendMoney")
     public String sendMoney(final Model model,
                             @RequestParam final Long id, @RequestParam String amount, @RequestParam String address) {
         WalletModel walletModel = walletService.sendMoney(id, amount, address);
