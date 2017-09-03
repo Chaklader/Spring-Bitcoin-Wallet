@@ -27,18 +27,6 @@ public class WalletInfoData {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public WalletInfo getByName(String walletName) {
-
-        List<WalletInfo> walletInfos = new ArrayList<>();
-
-//        List<WalletInfo> walletInfos = sessionFactory.getCurrentSession().createQuery("from WalletInfo where name = :name")
-//                .setParameter("name", walletName).getResultList();
-
-        return Objects.isNull(walletInfos) || walletInfos.isEmpty()
-                ? null : walletInfos.get(0);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
     public WalletInfo getById(final Long id) {
         return sessionFactory.getCurrentSession().get(WalletInfo.class, id);
     }
@@ -50,14 +38,12 @@ public class WalletInfoData {
     @Transactional(rollbackFor = Exception.class)
     public WalletInfo create(final String address, final String currency, final String code) {
 
-        // create the WalletInfo entity with provided name and address
         WalletInfo walletInfo = new WalletInfo();
 
         walletInfo.setAddress(address);
         walletInfo.setCurrency(currency);
         walletInfo.setCode(code);
 
-        // persist the created instance into the database
         sessionFactory.getCurrentSession().persist(walletInfo);
         return walletInfo;
     }

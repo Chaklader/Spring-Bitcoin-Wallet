@@ -115,7 +115,6 @@ public class WalletService {
         return walletInfo;
     }
 
-
     /**
      * get the wallet model with the provided ID
      *
