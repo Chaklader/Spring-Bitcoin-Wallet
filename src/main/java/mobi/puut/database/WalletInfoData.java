@@ -48,14 +48,14 @@ public class WalletInfoData {
      * @return return the created WalletInfo object with provided name and address
      */
     @Transactional(rollbackFor = Exception.class)
-    public WalletInfo create(String address) {
+    public WalletInfo create(final String address, final String currency, final String code) {
 
         // create the WalletInfo entity with provided name and address
         WalletInfo walletInfo = new WalletInfo();
 
         walletInfo.setAddress(address);
-        walletInfo.setCurrency("Bitcoin");
-        walletInfo.setCode("BTC");
+        walletInfo.setCurrency(currency);
+        walletInfo.setCode(code);
 
         // persist the created instance into the database
         sessionFactory.getCurrentSession().persist(walletInfo);

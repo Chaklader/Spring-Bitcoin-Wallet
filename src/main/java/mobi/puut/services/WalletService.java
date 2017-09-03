@@ -95,13 +95,13 @@ public class WalletService {
             walletManager.addWalletSetupCompletedListener((wallet) -> {
 
                 Address address = wallet.currentReceiveAddress();
-                WalletInfo newWallet = createWalletInfo(address.toString());
+                WalletInfo newWallet = createWalletInfo(address.toString(), "Bitcoin", "BTC");
 
                 walletInfo.setId(newWallet.getId());
                 walletInfo.setAddress(newWallet.getAddress());
 
-                // walletInfo.setCode(newWallet.getCode());
-                // walletInfo.setCurrency(newWallet.getCurrency());
+                walletInfo.setCode(newWallet.getCode());
+                walletInfo.setCurrency(newWallet.getCurrency());
 
                 walletMangersMap.put(newWallet.getId(), walletManager);
                 finshedSetup.countDown();
@@ -272,8 +272,8 @@ public class WalletService {
      * @param address
      * @return
      */
-    protected WalletInfo createWalletInfo(final String address) {
-        return walletInfoData.create(address);
+    protected WalletInfo createWalletInfo(final String address, final String currency, final String code) {
+        return walletInfoData.create(address, currency, code);
     }
 
     /**
