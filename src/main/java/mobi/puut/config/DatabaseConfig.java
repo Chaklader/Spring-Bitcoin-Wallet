@@ -65,7 +65,7 @@ public class DatabaseConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         // dataSource.setUrl("jdbc:mysql://localhost:3306/wallet?createDatabaseIfNotExist=true");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/BitcoinWallet");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/Wallet");
         dataSource.setUsername("testuser");
         dataSource.setPassword("testpassword");
 

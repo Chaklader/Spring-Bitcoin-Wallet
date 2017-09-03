@@ -18,7 +18,7 @@ public class BitcoinWalletsController {
     @Autowired
     private WalletService walletService;
 
-    @RequestMapping(value = "/")
+    @GetMapping(value = "/")
     public String showBitcoinWallet(final Model model) {
         List<WalletInfo> wallets = walletService.getAllWallets();
         model.addAttribute("wallets", wallets);
@@ -26,12 +26,11 @@ public class BitcoinWalletsController {
     }
 
     /**
-     * @param walletName accept walletName and generate the requested wallet
      * @return redirects to the landing page
      */
     @PostMapping(value = "/generateAddress")
-    public String generateAddress(final @RequestParam String walletName) {
-        walletService.generateAddress(walletName);
+    public String generateAddress() {
+        walletService.generateAddress();
         return "redirect:/";
     }
 

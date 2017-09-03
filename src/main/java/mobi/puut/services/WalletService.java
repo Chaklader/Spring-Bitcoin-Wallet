@@ -2,11 +2,12 @@ package mobi.puut.services;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
+import mobi.puut.controllers.RandomString;
 import mobi.puut.controllers.WalletManager;
 import mobi.puut.controllers.WalletModel;
-import mobi.puut.database.StatusDao;
-import mobi.puut.database.UserDao;
-import mobi.puut.database.WalletInfoDao;
+import mobi.puut.database.StatusData;
+import mobi.puut.database.UserData;
+import mobi.puut.database.WalletInfoData;
 import mobi.puut.entities.Status;
 import mobi.puut.entities.User;
 import mobi.puut.entities.WalletInfo;
@@ -19,14 +20,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 
 import static mobi.puut.controllers.WalletManager.networkParameters;
 
@@ -38,25 +38,27 @@ public class WalletService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private UserDao userDao;
+    private RandomString randomString;
 
     @Autowired
-    private StatusDao statusDao;
+    private UserData userData;
 
     @Autowired
-    private WalletInfoDao walletInfoDao;
+    private StatusData statusData;
+
+    @Autowired
+    private WalletInfoData walletInfoData;
 
     private Map<String, WalletManager> genWalletMap = new ConcurrentHashMap<>();
 
     private Map<Long, WalletManager> walletMangersMap = new ConcurrentHashMap<>();
 
     public List<Status> getWalletStatuses(final Long id) {
-        return statusDao.getByWalletId(id);
+        return statusData.getByWalletId(id);
     }
 
     public WalletInfo getWalletInfo(Long walletId) {
-        return walletInfoDao.getById(walletId);
+        return walletInfoData.getById(walletId);
     }
 
     /**
@@ -65,7 +67,7 @@ public class WalletService {
     public List<WalletInfo> getAllWallets() {
 
         try {
-            return walletInfoDao.getAllWallets();
+            return walletInfoData.getAllWallets();
         } catch (HibernateException e) {
             e.printStackTrace();
             return Collections.emptyList();
@@ -76,36 +78,41 @@ public class WalletService {
     /**
      * takes walletName as argument and generate a wallet accordance to that
      *
-     * @param walletName
+     * @param
      */
-    public synchronized WalletInfo generateAddress(final String walletName) {
+    public synchronized WalletInfo generateAddress() {
 
-        WalletInfo walletInfo = walletInfoDao.getByName(walletName);
+        CountDownLatch finshedSetup = new CountDownLatch(1);
 
-        // generate wallet, if the wallet is not
-        // generated previously
-        if (walletInfo == null) {
+        randomString = new RandomString();
+        final String fileName = randomString.nextString();
 
-            if (genWalletMap.get(walletName) == null) {
+        final WalletInfo walletInfo = new WalletInfo();
 
-                logger.info("Wallet name that we are workign on {}", walletName);
+        final WalletManager walletManager = WalletManager.setupWallet(fileName);
 
-                final WalletManager walletManager = WalletManager.setupWallet(walletName);
+        try {
+            walletManager.addWalletSetupCompletedListener((wallet) -> {
 
-                walletManager.addWalletSetupCompletedListener((wallet) -> {
+                Address address = wallet.currentReceiveAddress();
+                WalletInfo newWallet = createWalletInfo(address.toString());
 
-                    Address address = wallet.currentReceiveAddress();
-                    WalletInfo newWallet = createWalletInfo(walletName, address.toString());
+                walletInfo.setId(newWallet.getId());
+                walletInfo.setAddress(newWallet.getAddress());
 
-                    walletMangersMap.put(newWallet.getId(), walletManager);
-                    genWalletMap.remove(walletName);
-                });
+                // walletInfo.setCode(newWallet.getCode());
+                // walletInfo.setCurrency(newWallet.getCurrency());
 
-                genWalletMap.put(walletName, walletManager);
-            }
+                walletMangersMap.put(newWallet.getId(), walletManager);
+                finshedSetup.countDown();
+            });
+
+            finshedSetup.await();
             return walletInfo;
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
-        return null;
+        return walletInfo;
     }
 
 
@@ -240,13 +247,14 @@ public class WalletService {
         WalletManager walletManager = walletMangersMap.get(id);
 
         if (walletManager == null) {
-            WalletInfo walletInfo = walletInfoDao.getById(id);
+            WalletInfo walletInfo = walletInfoData.getById(id);
             if (walletInfo != null) {
-                String name = walletInfo.getName();
-                walletManager = WalletManager.setupWallet(name);
+                String fileName = randomString.nextString();
+                walletManager = WalletManager.setupWallet(fileName);
                 walletMangersMap.put(walletInfo.getId(), walletManager);
             }
         }
+
         return walletManager;
     }
 
@@ -254,19 +262,18 @@ public class WalletService {
      * @return return the user of concern
      */
     protected User getCurrentUser() {
-        User user = userDao.getById(1); //TODO
+        User user = userData.getById(1); //TODO
         return user;
     }
 
     /**
      * create instances in the wallet_info table with the wallet name and the address
      *
-     * @param walletName
      * @param address
      * @return
      */
-    protected WalletInfo createWalletInfo(final String walletName, final String address) {
-        return walletInfoDao.create(walletName, address);
+    protected WalletInfo createWalletInfo(final String address) {
+        return walletInfoData.create(address);
     }
 
     /**
@@ -287,10 +294,10 @@ public class WalletService {
         status.setWallet_id(walletId);
         status.setTransaction(message.length() > 90 ? message.substring(0, 89) : message);
         status.setBalance(balance.getValue());
-        return statusDao.saveStatus(status);
+        return statusData.saveStatus(status);
     }
 
     public void deleteWalletInfoById(Long id) {
-        walletInfoDao.deleteWalletInfoById(id);
+        walletInfoData.deleteWalletInfoById(id);
     }
 }

@@ -3,7 +3,7 @@ package mobi.puut.services;
 import java.util.List;
 import java.util.Objects;
 
-import mobi.puut.database.UserDao;
+import mobi.puut.database.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,19 +18,19 @@ import mobi.puut.entities.User;
 public class UserService {
 
     @Autowired
-    public UserDao userDAO;
+    public UserData userData;
 
     @Transactional(readOnly = true)
     public List<User> getCurrentStatuses() {
-        return userDAO.getAllUsers();
+        return userData.getAllUsers();
     }
 
     public void create(User user) {
-        userDAO.saveOrUpdate(user);
+        userData.saveOrUpdate(user);
     }
 
     public List<User> getAllUsers() {
-        List<User> users = userDAO.getAllUsers();
+        List<User> users = userData.getAllUsers();
 
         if (Objects.isNull(users)) {
             return null;

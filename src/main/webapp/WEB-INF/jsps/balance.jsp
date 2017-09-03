@@ -26,9 +26,9 @@
             <div class="balance_row">
                 <div class="fild_label">Balance</div>
                 <div class="fild_value">
-                <%= decimalFormat.format(walletModel.getBalanceFloatFormat()) %>&nbsp; BTC
+                    <%= decimalFormat.format(walletModel.getBalanceFloatFormat()) %>&nbsp; BTC
                 </div>
-            </div
+            </div>
             </br>
             <div class="address_row">
                 <%= walletModel.getAddress() != null ? walletModel.getAddress().toString() : "Getting the address ..."%>

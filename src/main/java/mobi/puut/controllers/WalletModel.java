@@ -31,7 +31,8 @@ public class WalletModel {
 
     private List<Transaction> transactions = Collections.synchronizedList(new ArrayList<>());
 
-    public WalletModel() {}
+    public WalletModel() {
+    }
 
     public int getUserId() {
         return UserId;
@@ -52,7 +53,6 @@ public class WalletModel {
     public WalletModel(Wallet wallet) {
         setWallet(wallet);
     }
-
 
     public boolean isSyncFinished() {
         return syncProgress == SYNCHRONISATION_FINISHED;

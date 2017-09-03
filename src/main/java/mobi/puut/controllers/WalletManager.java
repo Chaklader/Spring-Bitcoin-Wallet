@@ -59,12 +59,12 @@ public class WalletManager {
     }
 
     /**
-     * @param walletId takes wallet ID and generate the directory for the wallet
+     * @param fileName takes wallet ID and generate the directory for the wallet
      * @return reutrn the file direcotry
      */
-    protected File getWalletDirectory(final String walletId) {
+    protected File getWalletDirectory(final String fileName) {
 
-        File dir = new File(walletId);
+        File dir = new File(fileName);
         if (!dir.exists()) {
             dir.mkdir();
         }
@@ -85,11 +85,11 @@ public class WalletManager {
 
 
     /**
-     * @param walletId set up the wallet for the provided wallet ID
+     * @param fileName set up the wallet for the provided wallet ID
      */
-    private void setupWalletKit(final String walletId) {
+    private void setupWalletKit(final String fileName) {
 
-        File directory = getWalletDirectory(walletId);
+        File directory = getWalletDirectory(fileName);
 
         // if the seed is not null, that means we are restoring from the backup
         bitcoin = new WalletAppKit(networkParameters, directory, WALLET_FILE_NAME) {
