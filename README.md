@@ -9,7 +9,7 @@ Bitcoin wallet application to generate multiple wallets (e.g addresses) with fun
 balanace checking, transaction history and send money from the wallet to external wallet.
 
 
-![alt Wallet App UI](https://github.com/Chaklader/Ecommerce/blob/master/src/main/resources/database/db1.png)
+![alt Wallet App UI](https://github.com/Chaklader/Spring-Bitcoin-Wallet/blob/master/src/main/resources/App_UI.png)
                     image:Wallet App UI
 
 Improvement
