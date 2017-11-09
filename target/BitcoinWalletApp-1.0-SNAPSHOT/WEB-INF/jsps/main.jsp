@@ -25,6 +25,7 @@
     List<WalletInfo> wallets = (List<WalletInfo>) request.getAttribute("wallets");
 %>
 
+
 <body class="page_container">
 <div class="wallets_page">
 
