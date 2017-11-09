@@ -12,11 +12,9 @@
 <body>
 
 <table class="status" align="center">
-
     <h2 class="headertekst" style="color:black">TRANSACTION STATUSES</h2>
     </br>
     </br>
-
     <tr>
         <td>User Id</td>
         <td>Balance (BTC)</td>

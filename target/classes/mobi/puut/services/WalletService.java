@@ -74,7 +74,6 @@ public class WalletService {
         }
     }
 
-
     /**
      * takes walletName as argument and generate a wallet accordance to that
      *
@@ -165,6 +164,7 @@ public class WalletService {
 
         try {
             Coin amount = Coin.parseCoin(amountStr);
+
             if (amount.getValue() <= 0) {
                 throw new IllegalArgumentException("Invalid amount: " + amountStr);
             }
